@@ -1,161 +1,153 @@
-/****************************************************************************
- * main.c
+/**
+ * @file main.c
+ * @brief Pisca o LED da Blackpill (PC13) acessando os registradores.
  *
- *   Copyright (C) 2021 Daniel P. Carvalho. All rights reserved.
- *   Authors: Daniel P. Carvalho <daniel.carvalho@ufu.br>
+ * @author Daniel P. Carvalho <daniel.carvalho@ufu.br>
+ * @date 2021
  *
- ****************************************************************************/
+ * @copyright Copyright (c) 2021 Daniel P. Carvalho.
+ * SPDX-License-Identifier: MIT
+ */
 
-/****************************************************************************
- * Included Files
- ****************************************************************************/
+/* --- Included Files ----------------------------------------------------- */
 
 #include <stdint.h>
 #include <stdlib.h>
 
- /****************************************************************************
- * Pre-processor Definitions
- ****************************************************************************/
+/* --- Pre-processor Definitions ------------------------------------------ */
 
-/* AHB1 Base Addresses ******************************************************/
+/* Endereços base dos periféricos (RM0383, mapa de memória). */
 
-#define STM32_RCC_BASE       0x40023800     /* 0x40023800-0x40023bff: Reset and Clock control RCC */
+#define STM32_RCC_BASE            0x40023800U  /* Reset and clock control. */
+#define STM32_GPIOC_BASE          0x40020800U  /* GPIO porta C. */
 
-/* GPIOC Base Addresses ******************************************************/
+/* Offsets dos registradores. */
 
-#define STM32_GPIOC_BASE     0x40020800     /* 0x48000800-0x48000bff: GPIO Port C */
+#define STM32_RCC_AHB1ENR_OFFSET  0x0030U  /* Habilitação de clock AHB1. */
 
-/* Register Offsets *********************************************************/
+#define STM32_GPIO_MODER_OFFSET   0x0000U  /* Modo dos pinos. */
+#define STM32_GPIO_OTYPER_OFFSET  0x0004U  /* Tipo de saída. */
+#define STM32_GPIO_PUPDR_OFFSET   0x000cU  /* Pull-up/pull-down. */
+#define STM32_GPIO_ODR_OFFSET     0x0014U  /* Dado de saída. */
+#define STM32_GPIO_BSRR_OFFSET    0x0018U  /* Set/reset de bits. */
 
-#define STM32_RCC_AHB1ENR_OFFSET  0x0030   /* AHB1 Peripheral Clock enable register */
+/* Endereços dos registradores. */
 
-#define STM32_GPIO_MODER_OFFSET   0x0000  /* GPIO port mode register */
-#define STM32_GPIO_OTYPER_OFFSET  0x0004  /* GPIO port output type register */
-#define STM32_GPIO_PUPDR_OFFSET   0x000c  /* GPIO port pull-up/pull-down register */
-#define STM32_GPIO_ODR_OFFSET     0x0014  /* GPIO port output data register */
-#define STM32_GPIO_BSRR_OFFSET    0x0018  /* GPIO port bit set/reset register */
+#define STM32_RCC_AHB1ENR   (STM32_RCC_BASE + STM32_RCC_AHB1ENR_OFFSET)
 
+#define STM32_GPIOC_MODER   (STM32_GPIOC_BASE + STM32_GPIO_MODER_OFFSET)
+#define STM32_GPIOC_OTYPER  (STM32_GPIOC_BASE + STM32_GPIO_OTYPER_OFFSET)
+#define STM32_GPIOC_PUPDR   (STM32_GPIOC_BASE + STM32_GPIO_PUPDR_OFFSET)
+#define STM32_GPIOC_ODR     (STM32_GPIOC_BASE + STM32_GPIO_ODR_OFFSET)
+#define STM32_GPIOC_BSRR    (STM32_GPIOC_BASE + STM32_GPIO_BSRR_OFFSET)
 
-/* Register Addresses *******************************************************/
+/* RCC_AHB1ENR: habilitação de clock dos periféricos do barramento AHB1. */
 
-#define STM32_RCC_AHB1ENR        (STM32_RCC_BASE+STM32_RCC_AHB1ENR_OFFSET)
+#define RCC_AHB1ENR_GPIOCEN       (1U << 2)  /* Clock da porta C. */
 
-#define STM32_GPIOC_MODER        (STM32_GPIOC_BASE+STM32_GPIO_MODER_OFFSET)
-#define STM32_GPIOC_OTYPER       (STM32_GPIOC_BASE+STM32_GPIO_OTYPER_OFFSET)
-#define STM32_GPIOC_PUPDR        (STM32_GPIOC_BASE+STM32_GPIO_PUPDR_OFFSET)
-#define STM32_GPIOC_ODR          (STM32_GPIOC_BASE+STM32_GPIO_ODR_OFFSET)
-#define STM32_GPIOC_BSRR         (STM32_GPIOC_BASE+STM32_GPIO_BSRR_OFFSET)
+/* GPIO_MODER: modo de cada pino (2 bits por pino). */
 
-/* AHB1 Peripheral Clock enable register */
+#define GPIO_MODER_INPUT          0U  /* Entrada. */
+#define GPIO_MODER_OUTPUT         1U  /* Saída de uso geral. */
+#define GPIO_MODER_ALT            2U  /* Função alternativa. */
+#define GPIO_MODER_ANALOG         3U  /* Analógico. */
 
-#define RCC_AHB1ENR_GPIOCEN      (1 << 2)  /* Bit 2:  IO port C clock enable */
+#define GPIO_MODER_SHIFT(n)       ((n) << 1)
+#define GPIO_MODER_MASK(n)        (3U << GPIO_MODER_SHIFT(n))
 
-/* GPIO port mode register */
+/* GPIO_OTYPER: tipo de saída de cada pino (1 bit por pino). */
 
-#define GPIO_MODER_INPUT           (0) /* Input */
-#define GPIO_MODER_OUTPUT          (1) /* General purpose output mode */
-#define GPIO_MODER_ALT             (2) /* Alternate mode */
-#define GPIO_MODER_ANALOG          (3) /* Analog mode */
+#define GPIO_OTYPER_PP            0U  /* Push-pull. */
+#define GPIO_OTYPER_OD            1U  /* Dreno aberto. */
 
-#define GPIO_MODER_SHIFT(n)        (n << 1)
-#define GPIO_MODER_MASK(n)         (3 << GPIO_MODER_SHIFT(n))
+#define GPIO_OT_SHIFT(n)          (n)
+#define GPIO_OT_MASK(n)           (1U << GPIO_OT_SHIFT(n))
 
-/* GPIO port output type register */
+/* GPIO_PUPDR: resistores de pull-up/pull-down (2 bits por pino). */
 
-#define GPIO_OTYPER_PP             (0) /* 0=Output push-pull */
-#define GPIO_OTYPER_OD             (1) /* 1=Output open-drain */
+#define GPIO_PUPDR_NONE           0U  /* Sem pull-up nem pull-down. */
+#define GPIO_PUPDR_PULLUP         1U  /* Pull-up. */
+#define GPIO_PUPDR_PULLDOWN       2U  /* Pull-down. */
 
-#define GPIO_OT_SHIFT(n)           (n)
-#define GPIO_OT_MASK(n)            (1 << GPIO_OT_SHIFT(n))
+#define GPIO_PUPDR_SHIFT(n)       ((n) << 1)
+#define GPIO_PUPDR_MASK(n)        (3U << GPIO_PUPDR_SHIFT(n))
 
-/* GPIO port pull-up/pull-down register */
+/* GPIO_BSRR: os bits 0-15 ligam o pino, os bits 16-31 o desligam. */
 
-#define GPIO_PUPDR_NONE            (0) /* No pull-up, pull-down */
-#define GPIO_PUPDR_PULLUP          (1) /* Pull-up */
-#define GPIO_PUPDR_PULLDOWN        (2) /* Pull-down */
+#define GPIO_BSRR_SET(n)          (1U << (n))
+#define GPIO_BSRR_RESET(n)        (1U << ((n) + 16))
 
-#define GPIO_PUPDR_SHIFT(n)        (n << 1)
-#define GPIO_PUPDR_MASK(n)         (3 << GPIO_PUPDR_SHIFT(n))
+/* Configuração. */
 
-/* GPIO port bit set/reset register */
+#define LED_PIN    13U       /* LED da Blackpill: PC13, ativo em baixo. */
+#define LED_DELAY  100000U   /* Iterações do laço de atraso. */
 
-#define GPIO_BSRR_SET(n)           (1 << (n))
-#define GPIO_BSRR_RESET(n)         (1 << ((n) + 16))
+/* --- Public Functions --------------------------------------------------- */
 
-/* Configuration ************************************************************/
+/**
+ * @brief Configura o PC13 como saída e pisca o LED indefinidamente.
+ *
+ * @return Não retorna.
+ */
 
-#define LED_DELAY  100000
-
-/****************************************************************************
- * Private Types
- ****************************************************************************/
-
-/****************************************************************************
- * Private Function Prototypes
- ****************************************************************************/
-
-/****************************************************************************
- * Private Data
- ****************************************************************************/
-
- /****************************************************************************
- * Private Functions
- ****************************************************************************/
-
-/****************************************************************************
- * Public Functions
- ****************************************************************************/
-
-int main(int argc, char *argv[])
+int main(void)
 {
-  uint32_t i;
+  volatile uint32_t i;
   uint32_t reg;
 
-  /* Ponteiros para registradores */
+  /* Ponteiros para os registradores. O volatile obriga o compilador a
+   * fazer cada leitura e escrita, na ordem em que aparecem no código.
+   */
 
-  uint32_t *pRCC_AHB1ENR  = (uint32_t *)STM32_RCC_AHB1ENR;
-  uint32_t *pGPIOC_MODER  = (uint32_t *)STM32_GPIOC_MODER;
-  uint32_t *pGPIOC_OTYPER = (uint32_t *)STM32_GPIOC_OTYPER;
-  uint32_t *pGPIOC_PUPDR  = (uint32_t *)STM32_GPIOC_PUPDR;
-  uint32_t *pGPIOC_BSRR   = (uint32_t *)STM32_GPIOC_BSRR;
+  volatile uint32_t *rcc_ahb1enr  = (volatile uint32_t *)STM32_RCC_AHB1ENR;
+  volatile uint32_t *gpioc_moder  = (volatile uint32_t *)STM32_GPIOC_MODER;
+  volatile uint32_t *gpioc_otyper = (volatile uint32_t *)STM32_GPIOC_OTYPER;
+  volatile uint32_t *gpioc_pupdr  = (volatile uint32_t *)STM32_GPIOC_PUPDR;
+  volatile uint32_t *gpioc_bsrr   = (volatile uint32_t *)STM32_GPIOC_BSRR;
 
-  /* Habilita clock GPIOC */
+  /* Habilita o clock da porta C. */
 
-  reg  = *pRCC_AHB1ENR;
+  reg  = *rcc_ahb1enr;
   reg |= RCC_AHB1ENR_GPIOCEN;
-  *pRCC_AHB1ENR = reg;
+  *rcc_ahb1enr = reg;
 
-  /* Configura PC13 como saida pull-up off e pull-down off */
+  /* Configura o PC13 como saída push-pull, sem pull-up nem pull-down. */
 
-  reg = *pGPIOC_MODER;
-  reg &= ~GPIO_MODER_MASK(13);
-  reg |= (GPIO_MODER_OUTPUT << GPIO_MODER_SHIFT(13));
-  *pGPIOC_MODER = reg;  
+  reg  = *gpioc_moder;
+  reg &= ~GPIO_MODER_MASK(LED_PIN);
+  reg |= GPIO_MODER_OUTPUT << GPIO_MODER_SHIFT(LED_PIN);
+  *gpioc_moder = reg;
 
-  reg = *pGPIOC_OTYPER;
-  reg &= ~GPIO_OT_MASK(13);
-  reg |= (GPIO_OTYPER_PP << GPIO_OT_SHIFT(13));
-  *pGPIOC_OTYPER = reg;
+  reg  = *gpioc_otyper;
+  reg &= ~GPIO_OT_MASK(LED_PIN);
+  reg |= GPIO_OTYPER_PP << GPIO_OT_SHIFT(LED_PIN);
+  *gpioc_otyper = reg;
 
-  reg = *pGPIOC_PUPDR;
-  reg &= ~GPIO_PUPDR_MASK(13);
-  reg |= (GPIO_PUPDR_NONE << GPIO_PUPDR_SHIFT(13));
-  *pGPIOC_PUPDR = reg;
+  reg  = *gpioc_pupdr;
+  reg &= ~GPIO_PUPDR_MASK(LED_PIN);
+  reg |= GPIO_PUPDR_NONE << GPIO_PUPDR_SHIFT(LED_PIN);
+  *gpioc_pupdr = reg;
 
-  while(1)
+  while (1)
     {
-      /* Liga LED */
+      /* Liga o LED (ativo em nível baixo). */
 
-      *pGPIOC_BSRR = GPIO_BSRR_RESET(13);
-      for (i = 0; i < LED_DELAY; i++);
+      *gpioc_bsrr = GPIO_BSRR_RESET(LED_PIN);
 
-      /* Desliga LED */
+      for (i = 0; i < LED_DELAY; i++)
+        {
+        }
 
-      *pGPIOC_BSRR = GPIO_BSRR_SET(13);
-      for (i = 0; i < LED_DELAY; i++);
+      /* Desliga o LED. */
+
+      *gpioc_bsrr = GPIO_BSRR_SET(LED_PIN);
+
+      for (i = 0; i < LED_DELAY; i++)
+        {
+        }
     }
 
-  /* Nunca deveria chegar aqui */
+  /* Nunca deveria chegar aqui. */
 
   return EXIT_FAILURE;
 }
