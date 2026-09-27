@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "ARM-Cortex-M",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [
+        "STM32F411xE"
+      ],
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "intelliSenseMode": "linux-gcc-arm"
+    }
+  ],
+  "version": 4
+}
