@@ -35,7 +35,7 @@ make openocd  # inicia o servidor OpenOCD (em um terminal separado)
 make debug    # conecta o GDB ao OpenOCD
 ```
 
-Para depurar no VS Code, abra a pasta da placa (por exemplo, `blinky/stm32f411-blackpill`) e use a configuração do Cortex-Debug em `.vscode/launch.json`.
+Para depurar no VS Code com o Cortex-Debug, siga a seção "Validação com a placa" da [apostila](https://github.com/daniel-p-carvalho/ufu-embedded-systems), que mostra como criar o `.vscode/launch.json`.
 
 ## Padrão de codificação
 
