@@ -30,7 +30,7 @@ ufu-semb1-src/
 | Laboratório | Descrição | Semana Sugerida | Placa |
 |---|---|:---:|:---:|
 | [`lab-01/`](./lab-01) | **Validação do Ambiente:** Firmware *Blinky* completo para teste da cadeia cruzada (GCC, ST-LINK, OpenOCD, VS Code). | Semana 1 | STM32F411 Blackpill |
-| `lab-02/` | **Do C ao Binário:** Dissecção do pipeline de compilação, Load-Store e convenção AAPCS. | Semana 2 | — |
+| [`lab-02/`](./lab-02) | **Do C ao Binário:** Dissecção do pipeline de compilação, Load-Store e convenção AAPCS. | Semana 2 | — (Host PC) |
 | `lab-03/` | **A + B em Bare-Metal:** Escrita guiada de `startup.c` e `stm32f411-rom.ld`. | Semana 3 | STM32F411 Blackpill |
 | `lab-04/` | **Dissecando o Blinky:** Controle de GPIO por registradores, modificador `volatile` e `make`. | Semana 4 | STM32F411 Blackpill |
 
