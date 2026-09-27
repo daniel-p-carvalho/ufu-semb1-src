@@ -1,0 +1,10 @@
+# Artefatos de compilacao
+build/
+.deps/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
