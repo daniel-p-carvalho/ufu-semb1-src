@@ -36,3 +36,7 @@ make debug    # conecta o GDB ao OpenOCD
 ```
 
 Para depurar no VS Code, abra a pasta da placa (por exemplo, `blinky/stm32f411-blackpill`) e use a configuração do Cortex-Debug em `.vscode/launch.json`.
+
+## Licença
+
+O código deste repositório é distribuído sob a [licença MIT](LICENSE). O texto da apostila ([ufu-embedded-systems](https://github.com/daniel-p-carvalho/ufu-embedded-systems)) segue licença própria (Creative Commons BY-NC-SA).
