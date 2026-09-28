@@ -82,6 +82,29 @@
 #define LED_PIN    13U       /* LED da Blackpill: PC13, ativo em baixo. */
 #define LED_DELAY  100000U   /* Iterações do laço de atraso. */
 
+/* --- Public Data ---------------------------------------------------------- */
+
+/* Quantas iterações faltam para o laço de atraso terminar. Começa em
+ * LED_DELAY e é decrementada a cada volta, até chegar a zero.
+ */
+
+static volatile uint32_t g_delay_count = LED_DELAY;
+
+/* --- Private Functions ---------------------------------------------------- */
+
+/**
+ * @brief Espera ocupada de LED_DELAY iterações.
+ */
+
+static void delay(void)
+{
+  for ( ; g_delay_count > 0; g_delay_count--)
+    {
+    }
+
+  g_delay_count = LED_DELAY;
+}
+
 /* --- Public Functions --------------------------------------------------- */
 
 /**
@@ -92,7 +115,6 @@
 
 int main(void)
 {
-  volatile uint32_t i;
   uint32_t reg;
 
   /* Ponteiros para os registradores. O volatile obriga o compilador a
@@ -134,17 +156,13 @@ int main(void)
 
       *gpioc_bsrr = GPIO_BSRR_RESET(LED_PIN);
 
-      for (i = 0; i < LED_DELAY; i++)
-        {
-        }
+      delay();
 
       /* Desliga o LED. */
 
       *gpioc_bsrr = GPIO_BSRR_SET(LED_PIN);
 
-      for (i = 0; i < LED_DELAY; i++)
-        {
-        }
+      delay();
     }
 
   /* Nunca deveria chegar aqui. */
