@@ -1,8 +1,8 @@
-# Lab 03 — `g_a + g_b` em Bare-Metal
+# Lab 03 — Código de Inicialização e *Linker Script*
 
-Nesta aula, o programa `embedded.c` da aula anterior roda na placa sem sistema operacional, sem biblioteca C e sem *runtime* prontos. As duas peças que faltam, o **código de inicialização** (`startup.c`) e o ***linker script*** (`stm32f411-rom.ld`), são escritas por você, do zero, seguindo a apostila. O resultado é conferido no depurador: `g_a` vale 10 e `g_b` vale 0 quando o `main()` começa.
+Nesta aula, o programa `embedded.c` da aula anterior é ligado nos endereços reais do STM32F411. As duas peças que faltam, o **código de inicialização** (`startup.c`) e o ***linker script*** (`stm32f411-rom.ld`), são escritas por você, do zero, seguindo a apostila. O resultado é conferido **sem a placa**, com `nm`, `objdump`, o arquivo `.map` e `od`: a tabela de vetores em `0x08000000`, as variáveis em `0x20000000` e o valor inicial de `g_a` gravado na Flash.
 
-Esta pasta contém o **ponto de partida** da aula: só a aplicação. O `startup.c` e o *linker script* prontos aparecem na pasta do `lab-04`, que começa onde esta aula termina.
+Esta pasta contém o **ponto de partida** da aula: só a aplicação. O `startup.c` e o *linker script* prontos aparecem na pasta do `lab-04`, que começa onde esta aula termina e grava o programa na placa.
 
 ---
 
@@ -34,50 +34,26 @@ Você vai criar, na mesma pasta:
 ## 3. Como Começar
 
 ```bash
-cp -r ~/semb1-workspace/ufu-semb1-src/lab-03/stm32f411-blackpill ~/semb1-workspace/bare-metal
-cd ~/semb1-workspace/bare-metal
+cp -r ~/semb1-workspace/ufu-semb1-src/lab-03/stm32f411-blackpill ~/semb1-workspace/lab-03
+cd ~/semb1-workspace/lab-03
 ```
 
-## 4. Compilação, Ligação e Gravação (à mão, sem `Makefile`)
+## 4. Compilação e Ligação (à mão, sem `Makefile`)
 
 ```bash
 arm-none-eabi-gcc -c -g -mcpu=cortex-m4 -mthumb -O0 -Wall startup.c -o startup.o
 arm-none-eabi-gcc -c -g -mcpu=cortex-m4 -mthumb -O0 -Wall embedded.c -o embedded.o
 arm-none-eabi-gcc -nostdlib -T stm32f411-rom.ld -Wl,-Map=embedded.map -Wl,--print-memory-usage startup.o embedded.o -o embedded.elf
 arm-none-eabi-objcopy -O binary embedded.elf embedded.bin
-
-# Conferência antes de gravar
-arm-none-eabi-nm -n embedded.elf
-arm-none-eabi-objdump -h embedded.elf
-od -A x -t x4 -N 8 embedded.bin      # deve mostrar 20020000 08000041
-
-# Gravação
-st-flash --reset write embedded.bin 0x08000000
 ```
 
-## 5. Conferência no Depurador
-
-Em um terminal:
+## 5. Conferência da Imagem
 
 ```bash
-openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
+arm-none-eabi-nm -n embedded.elf         # g_vectors em 0x08000000; g_a, g_b e g_c em 0x20000000
+arm-none-eabi-objdump -h embedded.elf    # .data com VMA na SRAM e LMA na Flash
+od -A x -t x4 -N 8 embedded.bin          # deve mostrar 20020000 08000041
+od -A x -t x4 -j 0x110 -N 4 embedded.bin # valor inicial de g_a: 0000000a
 ```
 
-Em outro, na pasta do projeto:
-
-```text
-arm-none-eabi-gdb embedded.elf
-(gdb) target extended-remote localhost:3333
-(gdb) monitor reset halt
-(gdb) monitor mww 0x20000000 0xdeadbeef 3
-(gdb) x/3xw 0x20000000
-(gdb) break main
-(gdb) continue
-(gdb) x/3xw 0x20000000
-(gdb) print g_a
-(gdb) print g_b
-(gdb) next
-(gdb) print g_c
-```
-
-`g_a` deve valer 10 e `g_b` e `g_c` devem valer 0 ao chegar ao `main()`; depois do `next`, `g_c` vale 10.
+A gravação na placa e a conferência no depurador ficam para o `lab-04`.

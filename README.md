@@ -34,8 +34,9 @@ ufu-semb1-src/
 |---|---|:---:|:---:|
 | [`lab-01/`](./lab-01) | **Validação do Ambiente:** firmware *blinky* completo para teste da cadeia cruzada (GCC, ST-LINK, OpenOCD, VS Code). | Semana 1 | STM32F411 Blackpill |
 | [`lab-02/`](./lab-02) | **Do C ao Binário:** pipeline de compilação no PC e no ARM, Load-Store e convenção AAPCS. | Semana 2 | — (PC) |
-| [`lab-03/`](./lab-03) | **`g_a + g_b` em Bare-Metal:** escrita do `startup.c` e do `stm32f411-rom.ld` do zero. | Semana 4 | STM32F411 Blackpill |
-| `lab-04/` | **Dissecando o Blinky:** GPIO por registradores, modificador `volatile` e `make`. | Semana 5 | STM32F411 Blackpill |
+| [`lab-03/`](./lab-03) | **Código de Inicialização e *Linker Script*:** escrita do `startup.c` e do `stm32f411-rom.ld` do zero e conferência da imagem, sem a placa. | Semana 3 | — (PC, alvo STM32F411) |
+| `lab-04/` | **`g_a + g_b` em Bare-Metal:** gravação na placa e conferência no depurador do programa ligado no `lab-03`. | Semana 4 | STM32F411 Blackpill |
+| `lab-05/` | **Dissecando o Blinky:** GPIO por registradores, modificador `volatile` e `make`. | Semana 5 | STM32F411 Blackpill |
 
 **Cada pasta contém o estado do projeto no início da aula correspondente.** Um mesmo projeto é desenvolvido ao longo de várias aulas; se você perdeu uma aula, copie a pasta da aula seguinte e continue com a turma. O que se escreve em uma aula aparece pronto na pasta da aula seguinte.
 
