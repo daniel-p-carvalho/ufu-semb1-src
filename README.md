@@ -7,7 +7,7 @@ Apostila completa e material didático: <https://github.com/daniel-p-carvalho/uf
 
 ## 1. Organização do Repositório
 
-O repositório é estruturado em pastas de laboratório (`lab-XX/`) e ferramentas de apoio (`tools/`):
+O repositório é estruturado em pastas de laboratório (`lab-XX/`), uma por aula, e ferramentas de apoio (`tools/`). Os laboratórios que rodam na placa têm uma subpasta para cada placa suportada (`lab-XX/<placa>/`); os que rodam só no PC não têm.
 
 ```text
 ufu-semb1-src/
@@ -17,9 +17,12 @@ ufu-semb1-src/
 │
 ├── tools/                  # Ferramentas e configurações de suporte
 │   ├── udev/rules.d/       # Regras udev para adaptadores ST-LINK (V2, V2-1, V3)
-│   └── vscode/             # Modelos de configuração para o VS Code (launch, tasks, properties)
+│   └── vscode/             # Modelos genéricos de configuração do VS Code
 │
-├── lab-01/                 # Validação do Ambiente (Blackpill + ST-LINK)
+├── lab-01/                 # Validação do Ambiente
+│   ├── README.md           # Orientações e tabela de placas
+│   └── stm32f411-blackpill/
+├── lab-02/                 # Do C ao Binário (roda no PC, sem pasta de placa)
 └── ...                     # Próximos laboratórios
 ```
 
@@ -29,10 +32,12 @@ ufu-semb1-src/
 
 | Laboratório | Descrição | Semana Sugerida | Placa |
 |---|---|:---:|:---:|
-| [`lab-01/`](./lab-01) | **Validação do Ambiente:** Firmware *Blinky* completo para teste da cadeia cruzada (GCC, ST-LINK, OpenOCD, VS Code). | Semana 1 | STM32F411 Blackpill |
-| [`lab-02/`](./lab-02) | **Do C ao Binário:** Dissecção do pipeline de compilação, Load-Store e convenção AAPCS. | Semana 2 | — (Host PC) |
-| `lab-03/` | **A + B em Bare-Metal:** Escrita guiada de `startup.c` e `stm32f411-rom.ld`. | Semana 3 | STM32F411 Blackpill |
-| `lab-04/` | **Dissecando o Blinky:** Controle de GPIO por registradores, modificador `volatile` e `make`. | Semana 4 | STM32F411 Blackpill |
+| [`lab-01/`](./lab-01) | **Validação do Ambiente:** firmware *blinky* completo para teste da cadeia cruzada (GCC, ST-LINK, OpenOCD, VS Code). | Semana 1 | STM32F411 Blackpill |
+| [`lab-02/`](./lab-02) | **Do C ao Binário:** pipeline de compilação no PC e no ARM, Load-Store e convenção AAPCS. | Semana 2 | — (PC) |
+| `lab-03/` | **`g_a + g_b` em Bare-Metal:** escrita do `startup.c` e do `stm32f411-rom.ld` do zero. | Semana 4 | STM32F411 Blackpill |
+| `lab-04/` | **Dissecando o Blinky:** GPIO por registradores, modificador `volatile` e `make`. | Semana 5 | STM32F411 Blackpill |
+
+**Cada pasta contém o estado do projeto no início da aula correspondente.** Um mesmo projeto é desenvolvido ao longo de várias aulas; se você perdeu uma aula, copie a pasta da aula seguinte e continue com a turma. O que se escreve em uma aula aparece pronto na pasta da aula seguinte.
 
 ---
 
@@ -45,14 +50,16 @@ Recomendamos que o clone deste repositório seja mantido como **referência imut
 cd ~/semb1-workspace/ufu-semb1-src
 git pull origin master
 
-# 2. Copiar a pasta da prática do dia para a sua área de trabalho
-cp -r ~/semb1-workspace/ufu-semb1-src/lab-01 ~/semb1-workspace/meu-lab-01
-cd ~/semb1-workspace/meu-lab-01
+# 2. Copiar a pasta da prática do dia (e da sua placa) para a sua área de trabalho
+cp -r ~/semb1-workspace/ufu-semb1-src/lab-01/stm32f411-blackpill ~/semb1-workspace/lab-01
+cd ~/semb1-workspace/lab-01
 
 # 3. Compilar e gravar
 make clean && make
 make flash
 ```
+
+Para depurar no VS Code, abra a pasta copiada (a que contém o `Makefile`). Com exceção do `lab-01`, que já traz a sua `.vscode/`, copie os modelos genéricos de [`tools/vscode/`](./tools/vscode) e adapte-os conforme o `README.md` daquela pasta.
 
 ---
 
