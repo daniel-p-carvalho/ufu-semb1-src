@@ -22,11 +22,12 @@ A versão interativa em HTML da apostila completa e o código-fonte dos textos t
 
 ---
 
-## 1. Material Didático em PDF
+## 1. Material Didático e Documentação Oficial
 
-Para conveniência de consulta *offline*, impressão e acompanhamento nas aulas, disponibilizamos as versões oficiais dos documentos em PDF na pasta [`docs/`](./docs):
+Para conveniência de consulta *offline*, impressão e acompanhamento nas aulas, disponibilizamos as versões oficiais dos documentos na pasta [`docs/`](./docs):
 
-* **[Apostila Completa da Disciplina](docs/apostila/apostila-sistemas-embarcados.pdf)**: Volume consolidado com a fundamentação teórica completa e todos os roteiros de práticas de laboratório das Semanas 1 a 3.
+* **[Plano de Ensino (2026/02)](docs/plano-de-ensino.md)**: Documento oficial da disciplina contendo ementa, objetivos, metodologia, critérios de avaliação e o cronograma completo das 18 semanas alinhado ao calendário CONGRAD/UFU.
+* **[Apostila Completa da Disciplina](docs/apostila/apostila-sistemas-embarcados.pdf)**: Volume consolidado em PDF com a fundamentação teórica completa e todos os roteiros de práticas de laboratório das Semanas 1 a 3.
 * **[Cadernos de Atividades e Estudos Dirigidos](docs/atividades/)**: PDFs individuais de cada atividade extra-classe e estudo dirigido a serem entregues pelos estudantes:
   - [Atividade: Ambiente e Ferramentas de Desenvolvimento](docs/atividades/atividade-ambiente-ferramentas.pdf) (Semana 1)
   - [Estudo Dirigido: Arquitetura de Computadores](docs/atividades/estudo-dirigido-arquitetura.pdf) (Semana 1)
@@ -45,7 +46,8 @@ ufu-semb1-src/
 ├── CODING-STANDARD.md      # Padrão de codificação C da disciplina
 ├── LICENSE                 # Licença de uso do código-fonte (MIT)
 │
-├── docs/                   # Material didático oficial em PDF
+├── docs/                   # Material didático oficial e documentação
+│   ├── plano-de-ensino.md  # Plano de Ensino institucional (2026/02)
 │   ├── apostila/           # Apostila completa consolidada (Teoria + Práticas)
 │   ├── atividades/         # Roteiros individuais de atividades e estudos dirigidos
 │   └── images/             # Identidade visual e imagens de suporte
