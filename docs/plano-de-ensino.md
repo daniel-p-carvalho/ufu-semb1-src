@@ -176,15 +176,19 @@ O cronograma a seguir está rigorosamente alinhado com o Calendário Acadêmico 
 
 ## 9. Bibliografia
 
-### Bibliografia Básica
-1. **YIU, Joseph.** *The Definitive Guide to ARM® Cortex®-M3 and Cortex®-M4 Processors*. 3ª edição. Oxford: Newnes / Elsevier, 2013. ISBN: 978-0124080829.
-2. **TANENBAUM, Andrew S.; AUSTIN, Todd.** *Organização Estruturada de Computadores*. 6ª edição. São Paulo: Pearson, 2013. ISBN: 978-8581435398.
-3. **TOCCI, Ronald J.; WIDMER, Neal S.; MOSS, Gregory L.** *Sistemas Digitais: Princípios e Aplicações*. 11ª edição. São Paulo: Pearson Education do Brasil, 2011. ISBN: 978-8576059226.
+### Bibliografia Básica (PPC / MEC)
+1. **TOCCI, Ronald J.; WIDMER, Neal S.; MOSS, Gregory L.** *Sistemas digitais: princípios e aplicações*. 11. ed. São Paulo: Pearson Education do Brasil, 2011. xx, 817 p. ISBN: 978-8576059226.
+2. **TANENBAUM, Andrew S.** *Organização estruturada de computadores*. São Paulo: Pearson, 2013. 605 p. ISBN: 978-8581435398.
+3. **PRESSMAN, Roger S.** *Engenharia de software: uma abordagem profissional*. 8. ed. Porto Alegre: McGraw-Hill, 2016. ISBN: 978-8580555349.
 
 ### Bibliografia Complementar
-1. **CARVALHO, Daniel P.** *Sistemas Embarcados I: Da Teoria à Prática com ARM Cortex-M4 e STM32*. Universidade Federal de Uberlândia (UFU), 2026. Disponível em: <https://github.com/daniel-p-carvalho/ufu-embedded-systems>.
-2. **STMICROELECTRONICS.** *RM0383 Reference Manual: STM32F411xC/E Advanced Arm®-based 32-bit MCUs*. DocID 026448 Rev 7, 2021.
-3. **STMICROELECTRONICS.** *PM0214 Programming Manual: STM32 Cortex®-M4 MCUs and MPUs Programming Manual*. DocID 022708 Rev 5, 2020.
-4. **KERNIGHAN, Brian W.; RITCHIE, Dennis M.** *C: A Linguagem de Programação Padrão ANSI*. Rio de Janeiro: Campus, 1989. ISBN: 978-8570015860.
-5. **STALLMAN, Richard M. et al.** *Using the GNU Compiler Collection (GCC)*. Free Software Foundation, 2023. Disponível em: <https://gcc.gnu.org/onlinedocs/>.
-6. **PRESSMAN, Roger S.; MAXIM, Bruce R.** *Engenharia de Software: Uma Abordagem Profissional*. 8ª edição. Porto Alegre: McGraw-Hill, 2016. ISBN: 978-8580555349.
+1. **CARVALHO, Daniel P.** *Sistemas Embarcados I: Da Teoria à Prática com ARM Cortex-M4 e STM32*. Uberlândia: Faculdade de Engenharia Elétrica (FEELT/UFU), 2026.  
+   Disponível localmente no repositório: [Apostila da Disciplina (PDF)](apostila/apostila-sistemas-embarcados.pdf) \| Versão online interativa: <https://github.com/daniel-p-carvalho/ufu-embedded-systems>.
+2. **YIU, Joseph.** *The Definitive Guide to ARM® Cortex®-M3 and Cortex®-M4 Processors*. 3ª edição. Oxford: Newnes / Elsevier, 2013. ISBN: 978-0124080829.
+3. **STMICROELECTRONICS.** *RM0383 Reference Manual: STM32F411xC/E Advanced Arm®-based 32-bit MCUs*. DocID 026448 Rev 7, 2021.
+4. **STMICROELECTRONICS.** *PM0214 Programming Manual: STM32 Cortex®-M4 MCUs and MPUs Programming Manual*. DocID 022708 Rev 5, 2020.
+5. **BACKES, André.** *Linguagem C: completa e descomplicada*. Rio de Janeiro: Elsevier, 2013. 371 p. ISBN: 978-8535268553.
+6. **KERNIGHAN, Brian W.; RITCHIE, Dennis M.** *C: A Linguagem de Programação Padrão ANSI*. Rio de Janeiro: Campus, 1989. ISBN: 978-8570015860.
+7. **LI, Qing; YAO, Caroline.** *Real-Time Concepts for Embedded Systems*. San Francisco: CMP Books, 2003. xii, 294 p. ISBN: 978-1578201242.
+8. **OLIVEIRA, André Schneider de; ANDRADE, Fernando Souza de.** *Sistemas embarcados: hardware e firmware na prática*. São Paulo: Érica, 2006. 316 p. ISBN: 978-8536501055.
+9. **STALLMAN, Richard M. et al.** *Using the GNU Compiler Collection (GCC)*. Free Software Foundation, 2023. Disponível em: <https://gcc.gnu.org/onlinedocs/>.
