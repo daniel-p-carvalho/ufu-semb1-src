@@ -3,7 +3,8 @@
 
   # Sistemas Embarcados I
   ### Faculdade de Engenharia Elétrica / Engenharia de Controle e Automação (FEELT)
-  **Universidade Federal de Uberlândia (UFU)**
+  **Universidade Federal de Uberlândia (UFU)**  
+  *Autor:* Prof. Daniel P. Carvalho ([daniel.carvalho@ufu.br](mailto:daniel.carvalho@ufu.br))
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
   [![Plataforma: STM32F411](https://img.shields.io/badge/Alvo-STM32F411CEU6-orange.svg)]()
@@ -121,7 +122,15 @@ git push origin master
 
 ---
 
-## 6. Licença
+## 6. Autor e Contato
+
+* **Autor:** Prof. Daniel P. Carvalho
+* **E-mail institucional:** [daniel.carvalho@ufu.br](mailto:daniel.carvalho@ufu.br)
+* **Unidade:** Faculdade de Engenharia Elétrica (FEELT) — Universidade Federal de Uberlândia (UFU)
+
+---
+
+## 7. Licença
 
 * O código-fonte deste repositório é disponibilizado sob a **[Licença MIT](LICENSE)**.
 * O material textual e as apostilas em PDF são distribuídos sob a licença **Creative Commons Atribuição-NãoComercial-CompartilhaIgual (CC BY-NC-SA 4.0)**.
